@@ -15,6 +15,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @Table(name = "users")
 public class UserEntity {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
@@ -47,5 +48,4 @@ public class UserEntity {
 
     @Column(name = "date_of_registration")
     private LocalDateTime dateOfRegistration;
-
 }
