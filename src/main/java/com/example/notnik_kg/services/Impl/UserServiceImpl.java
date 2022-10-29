@@ -1,6 +1,7 @@
 package com.example.notnik_kg.services.Impl;
 
 import com.example.notnik_kg.entities.UserEntity;
+import com.example.notnik_kg.models.UserModel;
 import com.example.notnik_kg.models.UserRequest;
 import com.example.notnik_kg.repositories.UserRepo;
 import com.example.notnik_kg.services.UserService;
@@ -32,20 +33,29 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public ResponseEntity<?> createUser(UserRequest userRequest) {
-        UserEntity userEntity = new UserEntity();
-        LocalDateTime dateOfRegistration = LocalDateTime.now();
-        userEntity.setEmail(userRequest.getEmail());
-        userEntity.setPassword(passwordEncoder.encode(userRequest.getPassword()));
-        userEntity.setFirstName(userRequest.getFirstName());
-        userEntity.setLastName(userRequest.getLastName());
-        userEntity.setDateOfRegistration(dateOfRegistration);
-        userEntity.setPhoneNumber(userRequest.getPhoneNumber());
-        return new ResponseEntity<String>("User is created", HttpStatus.CREATED);
+        try {
+            UserEntity userEntity = new UserEntity();
+            LocalDateTime dateOfRegistration = LocalDateTime.now();
+            userEntity.setEmail(userRequest.getEmail());
+            userEntity.setPassword(passwordEncoder.encode(userRequest.getPassword()));
+            userEntity.setFirstName(userRequest.getFirstName());
+            userEntity.setLastName(userRequest.getLastName());
+            userEntity.setDateOfRegistration(dateOfRegistration);
+            userEntity.setPhoneNumber(userRequest.getPhoneNumber());
+            return new ResponseEntity<String>("User is created", HttpStatus.CREATED);
+        } catch (Exception e) {
+            return new ResponseEntity<String>("User isn't created", HttpStatus.BAD_REQUEST);
+        }
     }
 
     @Override
     public ResponseEntity<?> getUserId(Long id) {
-        return null;
+        try {
+            UserEntity user = userRepo.findById(id).get();
+            return ResponseEntity.ok(UserModel.toUser(user));
+        } catch (Exception e) {
+            return new ResponseEntity<>("A user with such an ID " + id + " not found", HttpStatus.NOT_FOUND);
+        }
     }
 
     @Override
