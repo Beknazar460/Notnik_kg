@@ -40,7 +40,6 @@ public class UserServiceImpl implements UserService {
         userEntity.setLastName(userRequest.getLastName());
         userEntity.setDateOfRegistration(dateOfRegistration);
         userEntity.setPhoneNumber(userRequest.getPhoneNumber());
-
         return new ResponseEntity<String>("User is created", HttpStatus.CREATED);
     }
 
