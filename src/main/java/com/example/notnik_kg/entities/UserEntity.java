@@ -5,9 +5,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
 
 @Entity
@@ -16,7 +13,6 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @Table(name = "users")
 public class UserEntity {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
@@ -39,4 +35,7 @@ public class UserEntity {
 
     @Column(name = "date_of_registration")
     private LocalDateTime dateOfRegistration;
+
+    @Column(name = "role")
+    private String role;
 }
