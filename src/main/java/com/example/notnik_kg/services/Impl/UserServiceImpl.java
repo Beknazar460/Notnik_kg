@@ -42,6 +42,7 @@ public class UserServiceImpl implements UserService {
             userEntity.setLastName(userRequest.getLastName());
             userEntity.setDateOfRegistration(dateOfRegistration);
             userEntity.setPhoneNumber(userRequest.getPhoneNumber());
+            userEntity.setRole("USER");
             return new ResponseEntity<String>("User is created", HttpStatus.CREATED);
         } catch (Exception e) {
             return new ResponseEntity<String>("User isn't created", HttpStatus.BAD_REQUEST);
@@ -60,11 +61,28 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public ResponseEntity<String> deleteUser(Long id) {
-        return null;
+        try {
+            userRepo.deleteById(id);
+            return new ResponseEntity<String>("User is deleted", HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<String>("User isn't found", HttpStatus.NOT_FOUND);
+        }
     }
 
     @Override
     public ResponseEntity<?> updateUser(Long id, UserRequest userRequest) {
-        return null;
+        return userRepo.findById(id)
+                .map(userEntity -> {
+            LocalDateTime dateAfterUpdate = LocalDateTime.now();
+            userEntity.setEmail(userRequest.getEmail());
+            userEntity.setPassword(userRequest.getPassword());
+            userEntity.setDateOfRegistration(dateAfterUpdate);
+            userEntity.setFirstName(userRequest.getFirstName());
+            userEntity.setLastName(userRequest.getLastName());
+            userEntity.setRole("USER");
+            userEntity.setPhoneNumber(userRequest.getPhoneNumber());
+            userRepo.save(userEntity);
+            return ResponseEntity.ok("A user with such an ID " + id + " updated");
+        }).orElse(new ResponseEntity<String>("A user with such an ID " + id + " not found", HttpStatus.NOT_FOUND));
     }
 }
