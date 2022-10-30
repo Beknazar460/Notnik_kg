@@ -38,10 +38,14 @@ public class UserServiceImpl implements UserService {
     public ResponseEntity<?> createUser(UserRequest userRequest) {
         try {
             UserEntity userEntity = modelMapper.map(userRequest, UserEntity.class);
+            userEntity.setDateOfRegistration(LocalDateTime.now());
+            userEntity.setRole("ROLE_USER");
+            userEntity.setPassword(passwordEncoder.encode(userEntity.getPassword()));
+
             userRepo.save(userEntity);
-            return new ResponseEntity<String>("User is created", HttpStatus.CREATED);
+            return new ResponseEntity<String>("User was created", HttpStatus.CREATED);
         } catch (Exception e) {
-            return new ResponseEntity<String>("User isn't created", HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<String>("User wasn't created", HttpStatus.BAD_REQUEST);
         }
     }
 
@@ -51,7 +55,7 @@ public class UserServiceImpl implements UserService {
             UserEntity user = userRepo.findById(id).get();
             return ResponseEntity.ok(UserModel.toUser(user));
         } catch (Exception e) {
-            return new ResponseEntity<>("A user with such an ID " + id + " not found", HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>("User with ID " + id + " wasn't not found", HttpStatus.NOT_FOUND);
         }
     }
 
@@ -59,26 +63,25 @@ public class UserServiceImpl implements UserService {
     public ResponseEntity<String> deleteUser(Long id) {
         try {
             userRepo.deleteById(id);
-            return new ResponseEntity<String>("User is deleted", HttpStatus.OK);
+            return new ResponseEntity<String>("User was deleted", HttpStatus.OK);
         } catch (Exception e) {
-            return new ResponseEntity<String>("User isn't found", HttpStatus.NOT_FOUND);
+            return new ResponseEntity<String>("User wasn't found", HttpStatus.NOT_FOUND);
         }
     }
 
     @Override
     public ResponseEntity<?> updateUser(Long id, UserRequest userRequest) {
-        return userRepo.findById(id)
-                .map(userEntity -> {
-            LocalDateTime dateAfterUpdate = LocalDateTime.now();
-            userEntity.setEmail(userRequest.getEmail());
-            userEntity.setPassword(userRequest.getPassword());
-            userEntity.setDateOfRegistration(dateAfterUpdate);
-            userEntity.setFirstName(userRequest.getFirstName());
-            userEntity.setLastName(userRequest.getLastName());
-            userEntity.setRole("USER");
-            userEntity.setPhoneNumber(userRequest.getPhoneNumber());
-            userRepo.save(userEntity);
-            return ResponseEntity.ok("A user with such an ID " + id + " updated");
-        }).orElse(new ResponseEntity<String>("A user with such an ID " + id + " not found", HttpStatus.NOT_FOUND));
+        if(userRepo.findById(id).isEmpty()){
+            return new ResponseEntity<>("User with ID " + id + " wasn't not found", HttpStatus.NOT_FOUND);
+        }
+
+        UserEntity userEntity = modelMapper.map(userRequest, UserEntity.class);
+        userEntity.setId(id);
+        userEntity.setPassword(passwordEncoder.encode(userEntity.getPassword()));
+        userEntity.setDateOfRegistration(LocalDateTime.now());
+        userEntity.setRole("USER_ROLE");
+        userRepo.save(userEntity);
+
+        return ResponseEntity.ok("User with ID " + id + " was updated");
     }
 }

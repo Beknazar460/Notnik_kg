@@ -37,5 +37,4 @@ public class UserRequest {
     @Size(min = 1, max = 50, message = "phone number must be between 1 and 50 characters")
     private String phoneNumber;
 
-    private LocalDateTime dateOfRegistration;
 }
