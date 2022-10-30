@@ -19,7 +19,7 @@ public class OrderModel {
         orderModel.setTitleOfProduct(orderEntity.getTitleOfProduct());
         orderModel.setPriceOfProduct(orderEntity.getPriceOfProduct());
         orderModel.setUserId(orderEntity.getUser().getId());
-        orderModel.setLaptopId(orderEntity.getLapTop().getId());
+        orderModel.setLaptopId(orderEntity.getLaptop().getId());
         return orderModel;
     }
 

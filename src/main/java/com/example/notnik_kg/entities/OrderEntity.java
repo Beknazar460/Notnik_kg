@@ -29,5 +29,5 @@ public class OrderEntity {
 
     @ManyToOne
     @JoinColumn(name = "laptop_id", referencedColumnName = "id")
-    private LaptopEntity lapTop;
+    private LaptopEntity laptop;
 }
