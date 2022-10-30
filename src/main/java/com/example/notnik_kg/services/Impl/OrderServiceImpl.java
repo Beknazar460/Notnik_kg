@@ -34,25 +34,35 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public ResponseEntity<?> createOrder(OrderRequest orderRequest) {
-        if (userRepo.findById(orderRequest.getUserId()).isPresent() && lapTopRepo.findById(orderRequest.getLaptopId()).isPresent()) {
-            OrderEntity orderEntity = new OrderEntity();
-            LaptopEntity laptopEntity = lapTopRepo.findByTitle(orderRequest.getTitleOfProduct());
-            orderEntity.setTitleOfProduct(laptopEntity.getTitle());
-            orderEntity.setPriceOfProduct(laptopEntity.getPrice());
-            orderEntity.setUser(userRepo.findById(orderRequest.getUserId()).get());
-            orderEntity.setLapTop(lapTopRepo.findById(orderRequest.getLaptopId()).get());
-            orderRepo.save(orderEntity);
-            return ResponseEntity.ok("Order is created");
+        try {
+            if (userRepo.findById(orderRequest.getUserId()).isPresent() && lapTopRepo.findById(orderRequest.getLaptopId()).isPresent()) {
+                OrderEntity orderEntity = new OrderEntity();
+                LaptopEntity laptopEntity = lapTopRepo.findByTitle(orderRequest.getTitleOfProduct());
+                orderEntity.setTitleOfProduct(laptopEntity.getTitle());
+                orderEntity.setPriceOfProduct(laptopEntity.getPrice());
+                orderEntity.setUser(userRepo.findById(orderRequest.getUserId()).get());
+                orderEntity.setLapTop(lapTopRepo.findById(orderRequest.getLaptopId()).get());
+                orderRepo.save(orderEntity);
+                return ResponseEntity.ok("Order is created");
+            }
+            else {
+                return new ResponseEntity<String>("Such a user or product does not exist", HttpStatus.NOT_FOUND);
+            }
+        } catch (Exception e) {
+            return new ResponseEntity<String>("Error create new order", HttpStatus.BAD_REQUEST);
         }
-        return new ResponseEntity<String>("Such a user or product does not exist", HttpStatus.NOT_FOUND);
     }
 
     @Override
     public ResponseEntity<String> deleteOrder(Long id) {
-        if (orderRepo.existsById(id)) {
-            orderRepo.deleteById(id);
-            return ResponseEntity.ok("Order is deleted");
+        try {
+            if (orderRepo.existsById(id)) {
+                orderRepo.deleteById(id);
+                return ResponseEntity.ok("Order is deleted");
+            }
+            else return new ResponseEntity<String>("There is no such order", HttpStatus.NOT_FOUND);
+        } catch (Exception e) {
+            return new ResponseEntity<String>("Error delete order", HttpStatus.BAD_REQUEST);
         }
-        else return new ResponseEntity<String>("There is no such order", HttpStatus.NOT_FOUND);
     }
 }
