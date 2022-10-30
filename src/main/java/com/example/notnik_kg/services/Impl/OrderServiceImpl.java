@@ -41,7 +41,7 @@ public class OrderServiceImpl implements OrderService {
                 orderEntity.setTitleOfProduct(laptopEntity.getTitle());
                 orderEntity.setPriceOfProduct(laptopEntity.getPrice());
                 orderEntity.setUser(userRepo.findById(orderRequest.getUserId()).get());
-                orderEntity.setLapTop(lapTopRepo.findById(orderRequest.getLaptopId()).get());
+                orderEntity.setLaptop(lapTopRepo.findById(orderRequest.getLaptopId()).get());
                 orderRepo.save(orderEntity);
                 return new ResponseEntity<String>("Order is created", HttpStatus.CREATED);
             }
