@@ -38,12 +38,17 @@ public class OrderServiceImpl implements OrderService {
             if (userRepo.findById(orderRequest.getUserId()).isPresent() && lapTopRepo.findById(orderRequest.getLaptopId()).isPresent()) {
                 OrderEntity orderEntity = new OrderEntity();
                 LaptopEntity laptopEntity = lapTopRepo.findByTitle(orderRequest.getTitleOfProduct());
-                orderEntity.setTitleOfProduct(laptopEntity.getTitle());
-                orderEntity.setPriceOfProduct(laptopEntity.getPrice());
-                orderEntity.setUser(userRepo.findById(orderRequest.getUserId()).get());
-                orderEntity.setLaptop(lapTopRepo.findById(orderRequest.getLaptopId()).get());
-                orderRepo.save(orderEntity);
-                return new ResponseEntity<String>("Order is created", HttpStatus.CREATED);
+                if (laptopEntity != null) {
+                    orderEntity.setTitleOfProduct(laptopEntity.getTitle());
+                    orderEntity.setPriceOfProduct(laptopEntity.getPrice());
+                    orderEntity.setUser(userRepo.findById(orderRequest.getUserId()).get());
+                    orderEntity.setLaptop(lapTopRepo.findById(orderRequest.getLaptopId()).get());
+                    orderRepo.save(orderEntity);
+                    return new ResponseEntity<String>("Order is created", HttpStatus.CREATED);
+                }
+                else {
+                    return new ResponseEntity<String>("Product with this name does not exist", HttpStatus.NOT_FOUND);
+                }
             }
             else {
                 return new ResponseEntity<String>("Such a user or product does not exist", HttpStatus.NOT_FOUND);
