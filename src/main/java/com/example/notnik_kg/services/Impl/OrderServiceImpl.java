@@ -43,7 +43,7 @@ public class OrderServiceImpl implements OrderService {
                 orderEntity.setUser(userRepo.findById(orderRequest.getUserId()).get());
                 orderEntity.setLapTop(lapTopRepo.findById(orderRequest.getLaptopId()).get());
                 orderRepo.save(orderEntity);
-                return ResponseEntity.ok("Order is created");
+                return new ResponseEntity<String>("Order is created", HttpStatus.CREATED);
             }
             else {
                 return new ResponseEntity<String>("Such a user or product does not exist", HttpStatus.NOT_FOUND);
