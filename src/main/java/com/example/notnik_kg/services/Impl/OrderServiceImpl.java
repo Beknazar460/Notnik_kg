@@ -1,7 +1,9 @@
 package com.example.notnik_kg.services.Impl;
 
+import com.example.notnik_kg.entities.LaptopEntity;
 import com.example.notnik_kg.entities.OrderEntity;
 import com.example.notnik_kg.models.OrderModel;
+import com.example.notnik_kg.models.OrderRequest;
 import com.example.notnik_kg.repositories.LaptopRepo;
 import com.example.notnik_kg.repositories.OrderRepo;
 import com.example.notnik_kg.repositories.UserRepo;
@@ -10,6 +12,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class OrderServiceImpl implements OrderService {
@@ -24,15 +28,20 @@ public class OrderServiceImpl implements OrderService {
         this.userRepo = userRepo;
     }
 
+    @Override
+    public List<OrderEntity> getAllOrders() {
+        return orderRepo.findAll();
+    }
 
     @Override
-    public ResponseEntity<?> createOrder(OrderModel orderModel) {
-        if (userRepo.findById(orderModel.getUserId()).isPresent() && lapTopRepo.findById(orderModel.getLaptopId()).isPresent()) {
+    public ResponseEntity<?> createOrder(OrderRequest orderRequest) {
+        if (userRepo.findById(orderRequest.getUserId()).isPresent() && lapTopRepo.findById(orderRequest.getLaptopId()).isPresent()) {
             OrderEntity orderEntity = new OrderEntity();
-            orderEntity.setTitleOfProduct(orderModel.getTitleOfProduct());
-            orderEntity.setPriceOfProduct(orderModel.getPriceOfProduct());
-            orderEntity.setUser(userRepo.findById(orderModel.getUserId()).get());
-            orderEntity.setLapTop(lapTopRepo.findById(orderModel.getLaptopId()).get());
+            LaptopEntity laptopEntity = lapTopRepo.findByTitle(orderRequest.getTitleOfProduct());
+            orderEntity.setTitleOfProduct(laptopEntity.getTitle());
+            orderEntity.setPriceOfProduct(laptopEntity.getPrice());
+            orderEntity.setUser(userRepo.findById(orderRequest.getUserId()).get());
+            orderEntity.setLapTop(lapTopRepo.findById(orderRequest.getLaptopId()).get());
             orderRepo.save(orderEntity);
             return ResponseEntity.ok("Order is created");
         }

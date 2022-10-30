@@ -6,4 +6,7 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface LaptopRepo extends JpaRepository<LaptopEntity, Long> {
+
+    LaptopEntity findByTitle(String title);
+
 }
