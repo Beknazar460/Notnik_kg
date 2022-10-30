@@ -5,6 +5,9 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotEmpty;
+import java.util.List;
 
 @Entity
 @Data
@@ -21,10 +24,12 @@ public class LaptopEntity {
     private String title;
 
     @Column(name = "price")
-    private String price;
+    private int price;
 
     @Column(name = "description")
     private String description;
 
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "laptop")
+    private List<OrderEntity> orderEntities;
 
 }
