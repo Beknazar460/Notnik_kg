@@ -1,7 +1,6 @@
 package com.example.notnik_kg.controllers;
 
 import com.example.notnik_kg.entities.OrderEntity;
-import com.example.notnik_kg.models.OrderModel;
 import com.example.notnik_kg.models.OrderRequest;
 import com.example.notnik_kg.services.Impl.OrderServiceImpl;
 import org.springframework.http.ResponseEntity;

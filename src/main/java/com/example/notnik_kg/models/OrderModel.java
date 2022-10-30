@@ -9,7 +9,7 @@ import lombok.*;
 public class OrderModel {
     private Long id;
     private String titleOfProduct;
-    private String priceOfProduct;
+    private int priceOfProduct;
     private Long userId;
     private Long laptopId;
 
@@ -22,4 +22,5 @@ public class OrderModel {
         orderModel.setLaptopId(orderEntity.getLapTop().getId());
         return orderModel;
     }
+
 }

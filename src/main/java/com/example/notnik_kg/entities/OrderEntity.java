@@ -21,7 +21,7 @@ public class OrderEntity {
     private String titleOfProduct;
 
     @Column(name = "price_of_product")
-    private String priceOfProduct;
+    private int priceOfProduct;
 
     @ManyToOne
     @JoinColumn(name = "user_id", referencedColumnName = "id")
