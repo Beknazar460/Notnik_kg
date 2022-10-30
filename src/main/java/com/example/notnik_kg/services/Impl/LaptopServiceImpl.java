@@ -66,13 +66,13 @@ public class LaptopServiceImpl implements LaptopService {
     @Override
     public ResponseEntity<?> updateLaptop(Long id, LaptopRequest laptopRequest) {
         if(laptopRepo.findById(id).isEmpty())
-            return new ResponseEntity<>("User with ID " + id + " wasn't found", HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>("Laptop with ID " + id + " wasn't found", HttpStatus.NOT_FOUND);
 
         LaptopEntity laptop = modelMapper.map(laptopRequest, LaptopEntity.class);
         laptop.setId(id);
         laptopRepo.save(laptop);
 
-        return ResponseEntity.ok("User with ID " + id + " was updated");
+        return ResponseEntity.ok("Laptop with ID " + id + " was updated");
     }
 
 }

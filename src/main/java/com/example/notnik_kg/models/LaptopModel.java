@@ -13,7 +13,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class LaptopModel {
-    private static ModelMapper modelMapper;
+    private static ModelMapper modelMapper = new ModelMapper();
 
     private Long id;
     private String title;
