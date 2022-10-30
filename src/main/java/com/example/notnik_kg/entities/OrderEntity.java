@@ -1,4 +1,33 @@
 package com.example.notnik_kg.entities;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+import javax.persistence.*;
+
+@Entity
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Table(name = "orders")
 public class OrderEntity {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
+    private Long id;
+
+    @Column(name = "title_of_product")
+    private String titleOfProduct;
+
+    @Column(name = "price_of_product")
+    private String priceOfProduct;
+
+    @ManyToOne
+    @JoinColumn(name = "user_id", referencedColumnName = "id")
+    private UserEntity user;
+
+    @ManyToOne
+    @JoinColumn(name = "laptop_id", referencedColumnName = "id")
+    private LaptopEntity lapTop;
 }
