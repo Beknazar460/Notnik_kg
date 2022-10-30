@@ -55,7 +55,7 @@ public class UserServiceImpl implements UserService {
             UserEntity user = userRepo.findById(id).get();
             return ResponseEntity.ok(UserModel.toUser(user));
         } catch (Exception e) {
-            return new ResponseEntity<>("User with ID " + id + " wasn't not found", HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>("User with ID " + id + " wasn't found", HttpStatus.NOT_FOUND);
         }
     }
 
@@ -72,7 +72,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public ResponseEntity<?> updateUser(Long id, UserRequest userRequest) {
         if(userRepo.findById(id).isEmpty()){
-            return new ResponseEntity<>("User with ID " + id + " wasn't not found", HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>("User with ID " + id + " wasn't found", HttpStatus.NOT_FOUND);
         }
 
         UserEntity userEntity = modelMapper.map(userRequest, UserEntity.class);
