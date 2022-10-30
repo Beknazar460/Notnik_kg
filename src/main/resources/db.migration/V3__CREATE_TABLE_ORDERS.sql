@@ -1,0 +1,9 @@
+CREATE TABLE orders (
+    id BIGSERIAL NOT NULl PRIMARY KEY,
+    title_of_product VARCHAR(60) NOT NULL  UNIQUE,
+    price_of_product VARCHAR(10) NOT NULL,
+    user_id BIGINT NOT NULL,
+    laptop_id BIGINT NOT NULL,
+    FOREIGN KEY (user_id) REFERENCES users (id),
+    FOREIGN KEY (laptop_id) REFERENCES laptops (id)
+);
