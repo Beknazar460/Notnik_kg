@@ -10,16 +10,18 @@ public class OrderModel {
     private Long id;
     private String titleOfProduct;
     private int priceOfProduct;
-    private Long userId;
-    private Long laptopId;
+    private String firstName;
+    private String lastName;
+    private String laptopTitle;
 
     public static OrderModel orderModel(OrderEntity orderEntity) {
         OrderModel orderModel = new OrderModel();
         orderModel.setId(orderEntity.getId());
         orderModel.setTitleOfProduct(orderEntity.getTitleOfProduct());
         orderModel.setPriceOfProduct(orderEntity.getPriceOfProduct());
-        orderModel.setUserId(orderEntity.getUser().getId());
-        orderModel.setLaptopId(orderEntity.getLaptop().getId());
+        orderModel.setFirstName(orderEntity.getUser().getFirstName());
+        orderModel.setLastName(orderEntity.getUser().getLastName());
+        orderModel.setLaptopTitle(orderEntity.getLaptop().getTitle());
         return orderModel;
     }
 
