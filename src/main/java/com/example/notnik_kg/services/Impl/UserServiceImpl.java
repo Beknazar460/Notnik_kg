@@ -1,6 +1,8 @@
 package com.example.notnik_kg.services.Impl;
 
+import com.example.notnik_kg.entities.LaptopEntity;
 import com.example.notnik_kg.entities.UserEntity;
+import com.example.notnik_kg.models.LaptopModel;
 import com.example.notnik_kg.models.UserModel;
 import com.example.notnik_kg.models.UserRequest;
 import com.example.notnik_kg.repositories.UserRepo;
@@ -51,12 +53,11 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public ResponseEntity<?> getUserId(Long id) {
-        try {
-            UserEntity user = userRepo.findById(id).get();
-            return ResponseEntity.ok(UserModel.toUser(user));
-        } catch (Exception e) {
+        if(userRepo.findById(id).isEmpty())
             return new ResponseEntity<>("User with ID " + id + " wasn't found", HttpStatus.NOT_FOUND);
-        }
+
+        UserEntity userEntity = userRepo.findById(id).get();
+        return ResponseEntity.ok(UserModel.toUserEntity(userEntity));
     }
 
     @Override
@@ -79,7 +80,7 @@ public class UserServiceImpl implements UserService {
         userEntity.setId(id);
         userEntity.setPassword(passwordEncoder.encode(userEntity.getPassword()));
         userEntity.setDateOfRegistration(LocalDateTime.now());
-        userEntity.setRole("USER_ROLE");
+        userEntity.setRole("ROLE_USER");
         userRepo.save(userEntity);
 
         return ResponseEntity.ok("User with ID " + id + " was updated");
