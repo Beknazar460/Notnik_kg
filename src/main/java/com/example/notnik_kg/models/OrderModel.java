@@ -12,6 +12,7 @@ public class OrderModel {
     private int priceOfProduct;
     private String firstName;
     private String lastName;
+    private String phoneNumber;
 
     public static OrderModel orderModel(OrderEntity orderEntity) {
         OrderModel orderModel = new OrderModel();
@@ -19,6 +20,7 @@ public class OrderModel {
         orderModel.setPriceOfProduct(orderEntity.getPriceOfProduct());
         orderModel.setFirstName(orderEntity.getUser().getFirstName());
         orderModel.setLastName(orderEntity.getUser().getLastName());
+        orderModel.setPhoneNumber(orderEntity.getUser().getPhoneNumber());
         return orderModel;
     }
 
