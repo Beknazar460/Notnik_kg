@@ -35,7 +35,7 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public ResponseEntity<?> createOrder(OrderRequest orderRequest) {
         try {
-            if (userRepo.findById(orderRequest.getUserId()).isPresent() ||lapTopRepo.findByTitle(orderRequest.getTitleOfProduct()) != null) {
+            if (userRepo.findById(orderRequest.getUserId()).isPresent() && lapTopRepo.findByTitle(orderRequest.getTitleOfProduct()) != null) {
                 OrderEntity orderEntity = new OrderEntity();
                 LaptopEntity laptopEntity = lapTopRepo.findByTitle(orderRequest.getTitleOfProduct());
                 if (laptopEntity != null) {
