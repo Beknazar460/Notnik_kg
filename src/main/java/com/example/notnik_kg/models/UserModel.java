@@ -1,7 +1,5 @@
 package com.example.notnik_kg.models;
 
-import com.example.notnik_kg.entities.LaptopEntity;
-import com.example.notnik_kg.entities.OrderEntity;
 import com.example.notnik_kg.entities.UserEntity;
 import lombok.AllArgsConstructor;
 import lombok.Data;

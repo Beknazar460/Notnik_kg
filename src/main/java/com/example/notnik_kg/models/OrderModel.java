@@ -7,21 +7,18 @@ import lombok.*;
 @AllArgsConstructor
 @Data
 public class OrderModel {
-    private Long id;
-    private String titleOfProduct;
+
+    private String laptopTitle;
     private int priceOfProduct;
     private String firstName;
     private String lastName;
-    private String laptopTitle;
 
     public static OrderModel orderModel(OrderEntity orderEntity) {
         OrderModel orderModel = new OrderModel();
-        orderModel.setId(orderEntity.getId());
-        orderModel.setTitleOfProduct(orderEntity.getTitleOfProduct());
+        orderModel.setLaptopTitle(orderEntity.getLaptop().getTitle());
         orderModel.setPriceOfProduct(orderEntity.getPriceOfProduct());
         orderModel.setFirstName(orderEntity.getUser().getFirstName());
         orderModel.setLastName(orderEntity.getUser().getLastName());
-        orderModel.setLaptopTitle(orderEntity.getLaptop().getTitle());
         return orderModel;
     }
 
