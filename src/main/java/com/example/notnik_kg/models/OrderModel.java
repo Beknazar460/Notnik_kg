@@ -3,6 +3,9 @@ package com.example.notnik_kg.models;
 import com.example.notnik_kg.entities.OrderEntity;
 import lombok.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
@@ -22,6 +25,15 @@ public class OrderModel {
         orderModel.setLastName(orderEntity.getUser().getLastName());
         orderModel.setPhoneNumber(orderEntity.getUser().getPhoneNumber());
         return orderModel;
+    }
+
+    public static List<OrderModel> listOrderModel(List<OrderEntity> orderEntities) {
+        List<OrderModel> orderModelList = new ArrayList<>();
+        for (OrderEntity order:orderEntities
+             ) {
+            orderModelList.add(OrderModel.orderModel(order));
+        }
+        return orderModelList;
     }
 
 }

@@ -31,12 +31,7 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public List<OrderModel> getAllOrders() {
-        List<OrderEntity> orderEntities = orderRepo.findAll();
-        List<OrderModel> orderModels = new ArrayList<>();
-        for (int i = 0; i < orderEntities.size(); i++) {
-            orderModels.add(OrderModel.orderModel(orderEntities.get(i)));
-        }
-        return orderModels;
+        return OrderModel.listOrderModel(orderRepo.findAll());
     }
 
     @Override
