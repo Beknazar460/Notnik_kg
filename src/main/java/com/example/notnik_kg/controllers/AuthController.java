@@ -1,6 +1,6 @@
 package com.example.notnik_kg.controllers;
 
-import com.example.notnik_kg.dto.LoginDTO;
+import com.example.notnik_kg.models.LoginRequest;
 import com.example.notnik_kg.models.UserRequest;
 import com.example.notnik_kg.services.Impl.RegistrationService;
 import com.example.notnik_kg.util.UserConfirmPasswordValidator;
@@ -41,9 +41,9 @@ public class AuthController {
     }
 
     @PostMapping("/signin")
-    public ResponseEntity<String> authenticateUser(@RequestBody LoginDTO loginDto){
+    public ResponseEntity<String> authenticateUser(@RequestBody LoginRequest loginRequest){
         Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
-                loginDto.getEmail(), loginDto.getPassword()));
+                loginRequest.getEmail(), loginRequest.getPassword()));
 
         SecurityContextHolder.getContext().setAuthentication(authentication);
         return new ResponseEntity<>("User signed-in successfully!.", HttpStatus.OK);
