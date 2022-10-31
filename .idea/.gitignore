@@ -1,0 +1,9 @@
+# Default ignored files
+/shelf/
+/workspace.xml
+# Editor-based HTTP Client requests
+/httpRequests/
+# Datasource local storage ignored files
+/dataSources/
+/dataSources.local.xml
+C:\Users\24425\Desktop\JavaLearn\Notnik_kg\Notnik_kg\src\main\resources\application.properties
