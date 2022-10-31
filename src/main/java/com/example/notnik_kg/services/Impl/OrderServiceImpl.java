@@ -35,14 +35,14 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public ResponseEntity<?> createOrder(OrderRequest orderRequest) {
         try {
-            if (userRepo.findById(orderRequest.getUserId()).isPresent() && lapTopRepo.findById(orderRequest.getLaptopId()).isPresent()) {
+            if (userRepo.findById(orderRequest.getUserId()).isPresent() ||lapTopRepo.findByTitle(orderRequest.getTitleOfProduct()) != null) {
                 OrderEntity orderEntity = new OrderEntity();
                 LaptopEntity laptopEntity = lapTopRepo.findByTitle(orderRequest.getTitleOfProduct());
                 if (laptopEntity != null) {
                     orderEntity.setTitleOfProduct(laptopEntity.getTitle());
                     orderEntity.setPriceOfProduct(laptopEntity.getPrice());
                     orderEntity.setUser(userRepo.findById(orderRequest.getUserId()).get());
-                    orderEntity.setLaptop(lapTopRepo.findById(orderRequest.getLaptopId()).get());
+                    orderEntity.setLaptop(lapTopRepo.findByTitle(orderRequest.getTitleOfProduct()));
                     orderRepo.save(orderEntity);
                     return new ResponseEntity<String>("Order is created", HttpStatus.CREATED);
                 }

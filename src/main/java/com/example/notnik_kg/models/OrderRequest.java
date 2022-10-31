@@ -17,7 +17,4 @@ public class OrderRequest {
     @NotEmpty(message = "User id can't be empty")
     private Long userId;
 
-    @NotEmpty(message = "laptop id can't be empty")
-    private Long laptopId;
-
 }
