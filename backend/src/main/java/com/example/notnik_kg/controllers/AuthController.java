@@ -5,6 +5,8 @@ import com.example.notnik_kg.models.UserRequest;
 import com.example.notnik_kg.services.Impl.RegistrationService;
 import com.example.notnik_kg.util.UserConfirmPasswordValidator;
 import com.example.notnik_kg.util.UserValidator;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,6 +21,10 @@ import javax.validation.Valid;
 
 @RestController
 @RequestMapping("/auth")
+@Tag(
+        name = "Контроллер для создания пользователей",
+        description = "В этом контроллере вы сможете регистрировать новых пользователей"
+)
 public class AuthController {
 
     private final RegistrationService registrationService;
@@ -36,12 +42,11 @@ public class AuthController {
         this.authenticationManager = authenticationManager;
     }
 
-    @GetMapping("/login")
-    public String loginPage() {
-        return "auth/login";
-    }
-
     @PostMapping("/signin")
+    @Operation(
+            summary = "Отправить логин и пароль для аутентификации",
+            description = "Позволяет аутентифицироваться"
+    )
     public ResponseEntity<String> authenticateUser(@RequestBody LoginRequest loginRequest){
         Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
                 loginRequest.getEmail(), loginRequest.getPassword()));
@@ -52,6 +57,10 @@ public class AuthController {
     }
 
     @PostMapping("/registration")
+    @Operation(
+            summary = "Создание нового пользователя",
+            description = "Позволяет создавать нового пользователя"
+    )
     public String performRegistration(@RequestBody @Valid UserRequest userRequest,
                                       BindingResult bindingResult) {
         userValidator.validate(userRequest, bindingResult);
