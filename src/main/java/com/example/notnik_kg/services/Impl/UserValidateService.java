@@ -23,5 +23,4 @@ public class UserValidateService {
         Optional<UserEntity> optionalPerson = userRepo.findUserEntityByEmail(user);
         return optionalPerson;
     }
-
 }
