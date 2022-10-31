@@ -10,6 +10,7 @@ import org.modelmapper.ModelMapper;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Data
 @NoArgsConstructor
@@ -23,9 +24,17 @@ public class UserModel {
     private String lastName;
     private String phoneNumber;
     private LocalDateTime dateOfRegistration;
-    private List<OrderEntity> orderEntities;
+    private List<OrderModel> orderEntities;
 
-    public static UserModel toUserEntity(UserEntity userEntity){
-        return modelMapper.map(userEntity, UserModel.class);
+    public static UserModel userModel(UserEntity userEntity) {
+        UserModel userModel = new UserModel();
+        userModel.setId(userEntity.getId());
+        userModel.setEmail(userEntity.getEmail());
+        userModel.setFirstName(userEntity.getFirstName());
+        userModel.setLastName(userEntity.getLastName());
+        userModel.setPhoneNumber(userEntity.getPhoneNumber());
+        userModel.setDateOfRegistration(userEntity.getDateOfRegistration());
+        userModel.setOrderEntities(userEntity.getOrderEntities().stream().map(OrderModel::orderModel).collect(Collectors.toList()));
+        return userModel;
     }
 }
