@@ -2,6 +2,7 @@ package com.example.notnik_kg.services.Impl;
 
 import com.example.notnik_kg.entities.LaptopEntity;
 import com.example.notnik_kg.entities.OrderEntity;
+import com.example.notnik_kg.models.OrderModel;
 import com.example.notnik_kg.models.OrderRequest;
 import com.example.notnik_kg.repositories.LaptopRepo;
 import com.example.notnik_kg.repositories.OrderRepo;
@@ -12,6 +13,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -28,7 +30,17 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public List<OrderEntity> getAllOrders() {
+    public List<OrderModel> getAllOrders() {
+        List<OrderEntity> orderEntities = orderRepo.findAll();
+        List<OrderModel> orderModels = new ArrayList<>();
+        for (int i = 0; i < orderEntities.size(); i++) {
+            orderModels.add(OrderModel.orderModel(orderEntities.get(i)));
+        }
+        return orderModels;
+    }
+
+    @Override
+    public List<OrderEntity> getAll() {
         return orderRepo.findAll();
     }
 

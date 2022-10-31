@@ -8,7 +8,8 @@ import org.springframework.http.ResponseEntity;
 import java.util.List;
 
 public interface OrderService {
-    List<OrderEntity> getAllOrders();
+    List<OrderModel> getAllOrders();
+    List<OrderEntity> getAll();
     ResponseEntity<?> createOrder(OrderRequest orderRequest);
     ResponseEntity<String> deleteOrder(Long id);
 }
