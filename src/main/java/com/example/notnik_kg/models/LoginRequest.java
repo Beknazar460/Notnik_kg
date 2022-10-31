@@ -1,9 +1,9 @@
-package com.example.notnik_kg.dto;
+package com.example.notnik_kg.models;
 
 import lombok.Data;
 
 @Data
-public class LoginDTO {
+public class LoginRequest {
 
     private String email;
 
