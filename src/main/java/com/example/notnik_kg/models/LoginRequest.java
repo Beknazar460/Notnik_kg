@@ -15,7 +15,7 @@ public class LoginRequest {
     @Email(message = "Email is not validated")
     private String email;
 
-    @Pattern(regexp = "((?=.*\\\\d)(?=.*[a-z])(?=.*[A-Z]).{6,20})", message = "6 to 20 characters. The password must contain at least one number, one lowercase letter, and one uppercase letter.")
+    @Pattern(regexp = "([a-z]+[A-Z]+[0-9]+|[a-z]+[0-9]+[A-Z]+|[A-Z]+[a-z]+[0-9]+|[A-Z]+[0-9]+[a-z]+|[0-9]+[a-z]+[A-Z]+|[0-9]+[A-Z]+[a-z]+)", message = "6 to 20 characters. The password must contain at least one number, one lowercase letter, and one uppercase letter.")
     @NotEmpty(message = "Password should not be empty")
     @Size(min = 1, max = 100, message = "Password must be between 1 and 100 characters")
     private String password;
