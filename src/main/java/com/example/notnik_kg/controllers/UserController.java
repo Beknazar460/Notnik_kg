@@ -1,6 +1,7 @@
 package com.example.notnik_kg.controllers;
 
 import com.example.notnik_kg.entities.UserEntity;
+import com.example.notnik_kg.models.UserModel;
 import com.example.notnik_kg.models.UserRequest;
 import com.example.notnik_kg.services.Impl.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,8 +21,8 @@ public class UserController {
     }
 
     @GetMapping()
-    public List<UserEntity> getUsers(){
-        return userService.getAllUsers();
+    public List<UserModel> getUsers(){
+        return userService.getListAllUsers();
     }
 
     @GetMapping("/{id}")

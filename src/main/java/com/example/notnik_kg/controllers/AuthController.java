@@ -27,6 +27,7 @@ public class AuthController {
     private final UserConfirmPasswordValidator userConfirmPasswordValidator;
     private final AuthenticationManager authenticationManager;
 
+
     @Autowired
     public AuthController(RegistrationService registrationService, UserValidator userValidator, UserConfirmPasswordValidator userConfirmPasswordValidator, AuthenticationManager authenticationManager) {
         this.registrationService = registrationService;
@@ -44,6 +45,7 @@ public class AuthController {
     public ResponseEntity<String> authenticateUser(@RequestBody LoginRequest loginRequest){
         Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
                 loginRequest.getEmail(), loginRequest.getPassword()));
+
 
         SecurityContextHolder.getContext().setAuthentication(authentication);
         return new ResponseEntity<>("User signed-in successfully!.", HttpStatus.OK);

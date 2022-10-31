@@ -1,5 +1,6 @@
 package com.example.notnik_kg.models;
 
+import com.example.notnik_kg.entities.LaptopEntity;
 import com.example.notnik_kg.entities.UserEntity;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -7,6 +8,7 @@ import lombok.NoArgsConstructor;
 import org.modelmapper.ModelMapper;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -34,5 +36,16 @@ public class UserModel {
         userModel.setDateOfRegistration(userEntity.getDateOfRegistration());
         userModel.setOrderEntities(userEntity.getOrderEntities().stream().map(OrderModel::orderModel).collect(Collectors.toList()));
         return userModel;
+    }
+
+
+
+    public static List<UserModel> listLUserModel(List<UserEntity> userEntities) {
+        List<UserModel> listUserModel = new ArrayList<>();
+        for (UserEntity user:userEntities
+        ) {
+            listUserModel.add(UserModel.userModel(user));
+        }
+        return listUserModel;
     }
 }

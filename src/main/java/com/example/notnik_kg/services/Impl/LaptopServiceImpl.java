@@ -12,12 +12,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
-public class LaptopServiceImpl implements LaptopService {
+@Transactional
+public class LaptopServiceImpl {
     private final LaptopRepo laptopRepo;
     private final ModelMapper modelMapper;
 
@@ -27,21 +29,22 @@ public class LaptopServiceImpl implements LaptopService {
         this.modelMapper = modelMapper;
     }
 
-    @Override
-    public List<LaptopEntity> getLaptops() {
-        return laptopRepo.findAll();
+    @Transactional
+    public List<LaptopModel> getListLaptops() {
+        return LaptopModel.listLaptopModel(laptopRepo.findAll());
     }
 
-    @Override
+    @Transactional
     public ResponseEntity<?> getLaptopById(Long id) {
-        if(laptopRepo.findById(id).isEmpty())
+        try {
+            LaptopEntity laptop = laptopRepo.findById(id).get();
+            return ResponseEntity.ok(LaptopModel.laptopModel(laptop));
+        } catch (Exception e) {
             return new ResponseEntity<>("Laptop with ID " + id + " wasn't found", HttpStatus.NOT_FOUND);
-
-        LaptopEntity laptop = laptopRepo.findById(id).get();
-        return ResponseEntity.ok(LaptopModel.toLaptop(laptop));
+        }
     }
 
-    @Override
+    @Transactional
     public ResponseEntity<String> addLaptop(LaptopRequest laptopRequest) {
         try {
             LaptopEntity laptop = modelMapper.map(laptopRequest, LaptopEntity.class);
@@ -53,7 +56,7 @@ public class LaptopServiceImpl implements LaptopService {
         }
     }
 
-    @Override
+    @Transactional
     public ResponseEntity<String> deleteLaptop(Long id) {
         try {
             laptopRepo.deleteById(id);
@@ -63,7 +66,7 @@ public class LaptopServiceImpl implements LaptopService {
         }
     }
 
-    @Override
+    @Transactional
     public ResponseEntity<?> updateLaptop(Long id, LaptopRequest laptopRequest) {
         if(laptopRepo.findById(id).isEmpty())
             return new ResponseEntity<>("Laptop with ID " + id + " wasn't found", HttpStatus.NOT_FOUND);

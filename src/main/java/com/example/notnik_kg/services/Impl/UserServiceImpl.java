@@ -11,12 +11,14 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
-public class UserServiceImpl implements UserService {
+@Transactional
+public class UserServiceImpl {
 
     private final UserRepo userRepo;
     private final PasswordEncoder passwordEncoder;
@@ -29,12 +31,12 @@ public class UserServiceImpl implements UserService {
         this.modelMapper = modelMapper;
     }
 
-    @Override
-    public List<UserEntity> getAllUsers() {
-        return userRepo.findAll();
+    @Transactional(readOnly = true)
+    public List<UserModel> getListAllUsers() {
+        return UserModel.listLUserModel(userRepo.findAll());
     }
 
-    @Override
+    @Transactional
     public ResponseEntity<?> createUser(UserRequest userRequest) {
         try {
             UserEntity userEntity = modelMapper.map(userRequest, UserEntity.class);
@@ -49,7 +51,7 @@ public class UserServiceImpl implements UserService {
         }
     }
 
-    @Override
+    @Transactional
     public ResponseEntity<?> getUserId(Long id) {
         try {
             UserEntity user = userRepo.findById(id).get();
@@ -59,7 +61,7 @@ public class UserServiceImpl implements UserService {
         }
     }
 
-    @Override
+    @Transactional
     public ResponseEntity<String> deleteUser(Long id) {
         try {
             userRepo.deleteById(id);
@@ -69,7 +71,7 @@ public class UserServiceImpl implements UserService {
         }
     }
 
-    @Override
+    @Transactional
     public ResponseEntity<?> updateUser(Long id, UserRequest userRequest) {
         if(userRepo.findById(id).isEmpty()){
             return new ResponseEntity<>("User with ID " + id + " wasn't found", HttpStatus.NOT_FOUND);

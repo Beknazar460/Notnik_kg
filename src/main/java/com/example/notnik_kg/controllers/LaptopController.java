@@ -1,6 +1,7 @@
 package com.example.notnik_kg.controllers;
 
 import com.example.notnik_kg.entities.LaptopEntity;
+import com.example.notnik_kg.models.LaptopModel;
 import com.example.notnik_kg.models.LaptopRequest;
 import com.example.notnik_kg.services.Impl.LaptopServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,8 +22,8 @@ public class LaptopController {
     }
 
     @GetMapping()
-    public List<LaptopEntity> getLaptops(){
-        return laptopService.getLaptops();
+    public List<LaptopModel> getLaptops(){
+        return laptopService.getListLaptops();
     }
 
     @GetMapping("/{id}")
