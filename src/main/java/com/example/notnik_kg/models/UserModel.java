@@ -38,8 +38,6 @@ public class UserModel {
         return userModel;
     }
 
-
-
     public static List<UserModel> listLUserModel(List<UserEntity> userEntities) {
         List<UserModel> listUserModel = new ArrayList<>();
         for (UserEntity user:userEntities
