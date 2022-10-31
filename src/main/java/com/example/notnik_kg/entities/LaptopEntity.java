@@ -29,5 +29,4 @@ public class LaptopEntity {
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "laptop")
     private List<OrderEntity> orderEntities;
-
 }

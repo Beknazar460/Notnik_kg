@@ -31,6 +31,8 @@ public class UserRequest {
     @Size(min = 1, max = 50, message = "password must be between 1 and 50 characters")
     private String password;
 
+    @NotEmpty(message = "Confirm password should not be empty")
+    @Size(min = 1, max = 50, message = "password must be between 1 and 50 characters")
     private String confirmPass;
 
     @NotEmpty(message = "Phone number should not be empty")

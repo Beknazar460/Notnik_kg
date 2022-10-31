@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Data
@@ -38,4 +39,7 @@ public class UserEntity {
 
     @Column(name = "role")
     private String role;
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
+    private List<OrderEntity> orderEntities;
 }

@@ -4,6 +4,7 @@ import com.example.notnik_kg.services.Impl.UserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -29,18 +30,26 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         // конфигурируем сам Spring Security
         // конфигурируем авторизацию
         http.csrf().disable()
-                .authorizeRequests()
-                .antMatchers("/auth/registration", "/auth/login").permitAll()
-                .anyRequest().permitAll()
+                .httpBasic()
                 .and()
-                .formLogin().loginPage("/auth/login")
-                .loginProcessingUrl("/process_login")
+                .authorizeRequests()
+                .antMatchers("/auth/registration", "/auth/login", "/auth/signin").permitAll()
+                .anyRequest().hasRole("USER")
+                .and()
+                .formLogin()
+                .loginProcessingUrl("/auth/login")
                 .defaultSuccessUrl("/", true)
                 .failureUrl("/auth/login?error")
                 .and()
                 .logout()
                 .logoutUrl("/logout")
                 .logoutSuccessUrl("/auth/login");
+    }
+
+    @Override
+    @Bean
+    public AuthenticationManager authenticationManagerBean() throws Exception {
+        return super.authenticationManagerBean();
     }
 
     // Настраиваем аутентификацию

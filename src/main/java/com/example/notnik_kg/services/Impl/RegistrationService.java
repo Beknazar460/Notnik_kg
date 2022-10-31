@@ -4,6 +4,8 @@ import com.example.notnik_kg.entities.UserEntity;
 import com.example.notnik_kg.models.UserRequest;
 import com.example.notnik_kg.repositories.UserRepo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,7 +24,7 @@ public class RegistrationService {
     }
 
     @Transactional
-    public void register(UserRequest person){
+    public ResponseEntity<HttpStatus> register(UserRequest person){
         person.setPassword(passwordEncoder.encode(person.getPassword()));
         UserEntity user = new UserEntity();
         user.setFirstName(person.getFirstName());
@@ -33,5 +35,6 @@ public class RegistrationService {
         user.setRole("ROLE_USER");
         user.setDateOfRegistration(LocalDateTime.now());
         userRepo.save(user);
+        return ResponseEntity.ok(HttpStatus.OK);
     }
 }

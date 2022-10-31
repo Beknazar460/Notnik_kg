@@ -1,10 +1,17 @@
 package com.example.notnik_kg.controllers;
 
-import com.example.notnik_kg.entities.UserEntity;
+import com.example.notnik_kg.dto.LoginDTO;
 import com.example.notnik_kg.models.UserRequest;
 import com.example.notnik_kg.services.Impl.RegistrationService;
+import com.example.notnik_kg.util.UserConfirmPasswordValidator;
 import com.example.notnik_kg.util.UserValidator;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,10 +24,15 @@ public class AuthController {
     private final RegistrationService registrationService;
     private final UserValidator userValidator;
 
+    private final UserConfirmPasswordValidator userConfirmPasswordValidator;
+    private final AuthenticationManager authenticationManager;
+
     @Autowired
-    public AuthController(RegistrationService registrationService, UserValidator userValidator) {
+    public AuthController(RegistrationService registrationService, UserValidator userValidator, UserConfirmPasswordValidator userConfirmPasswordValidator, AuthenticationManager authenticationManager) {
         this.registrationService = registrationService;
         this.userValidator = userValidator;
+        this.userConfirmPasswordValidator = userConfirmPasswordValidator;
+        this.authenticationManager = authenticationManager;
     }
 
     @GetMapping("/login")
@@ -28,21 +40,26 @@ public class AuthController {
         return "auth/login";
     }
 
-    @GetMapping("/registration")
-    public String registrationPage(@ModelAttribute("person") UserEntity person) {
-        return "auth/registration";
+    @PostMapping("/signin")
+    public ResponseEntity<String> authenticateUser(@RequestBody LoginDTO loginDto){
+        Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
+                loginDto.getEmail(), loginDto.getPassword()));
+
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+        return new ResponseEntity<>("User signed-in successfully!.", HttpStatus.OK);
     }
 
     @PostMapping("/registration")
     public String performRegistration(@RequestBody @Valid UserRequest userRequest,
                                       BindingResult bindingResult) {
         userValidator.validate(userRequest, bindingResult);
+        userConfirmPasswordValidator.validate(userRequest, bindingResult);
 
         if (bindingResult.hasErrors())
-            return "/auth/registration";
+            return bindingResult.getFieldErrors().get(0).getDefaultMessage();
 
         registrationService.register(userRequest);
 
-        return "redirect:/auth/login";
+        return "Registration successful";
     }
 }
