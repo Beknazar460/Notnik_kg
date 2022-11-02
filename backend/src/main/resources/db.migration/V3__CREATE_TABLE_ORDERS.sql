@@ -1,5 +1,6 @@
 CREATE TABLE orders (
     id BIGSERIAL NOT NULl PRIMARY KEY,
+    order_date timestamp NOT NULL,
     title_of_product VARCHAR(60) NOT NULL,
     price_of_product VARCHAR(10) NOT NULL,
     user_id BIGINT NOT NULL,

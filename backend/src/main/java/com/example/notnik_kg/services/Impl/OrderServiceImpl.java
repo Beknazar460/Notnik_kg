@@ -13,6 +13,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -47,6 +48,7 @@ public class OrderServiceImpl implements OrderService {
                 LaptopEntity laptopEntity = lapTopRepo.findByTitle(orderRequest.getTitleOfProduct());
                 if (laptopEntity != null) {
                     orderEntity.setTitleOfProduct(laptopEntity.getTitle());
+                    orderEntity.setOrderDate(LocalDateTime.now());
                     orderEntity.setPriceOfProduct(laptopEntity.getPrice());
                     orderEntity.setUser(userRepo.findById(orderRequest.getUserId()).get());
                     orderEntity.setLaptop(lapTopRepo.findByTitle(orderRequest.getTitleOfProduct()));
