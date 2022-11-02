@@ -19,7 +19,6 @@ public class OrderRequest {
     private String titleOfProduct;
 
     @Schema(description = "Идентификатор пользователя")
-    @NotEmpty(message = "User id can't be empty")
     private Long userId;
 
 }

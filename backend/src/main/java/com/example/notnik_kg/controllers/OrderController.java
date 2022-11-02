@@ -9,6 +9,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -40,7 +41,7 @@ public class OrderController {
             summary = "Создание заказа",
             description = "Позволяет создать заказ введя его данные"
     )
-    private ResponseEntity<?> createOrder(@RequestBody OrderRequest orderRequest) {
+    private ResponseEntity<?> createOrder(@Valid @RequestBody OrderRequest orderRequest) {
         return orderService.createOrder(orderRequest);
     }
 
