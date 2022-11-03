@@ -86,4 +86,30 @@ public class UserServiceImpl {
 
         return ResponseEntity.ok("User with ID " + id + " was updated");
     }
+
+    @Transactional
+    public ResponseEntity<String> makeAdmin(Long id) {
+        UserEntity user = userRepo.findById(id).orElse(null);
+        if(user != null) {
+            if(user.getRole().equals("ROLE_ADMIN")){
+                return new ResponseEntity<>("Already an administrator!", HttpStatus.BAD_REQUEST);
+            }
+            user.setRole("ROLE_ADMIN");
+            return new ResponseEntity<>("User set as administrator!", HttpStatus.OK);
+        }
+        return new ResponseEntity<>("User with ID: " + id + " not found!", HttpStatus.NOT_FOUND);
+    }
+
+    @Transactional
+    public ResponseEntity<String> makeUser(Long id) {
+        UserEntity user = userRepo.findById(id).orElse(null);
+        if(user != null) {
+            if(user.getRole().equals("ROLE_USER")){
+                return new ResponseEntity<>("Already an user!", HttpStatus.BAD_REQUEST);
+            }
+            user.setRole("ROLE_USER");
+            return new ResponseEntity<>("Administrator set as user!", HttpStatus.OK);
+        }
+        return new ResponseEntity<>("User with ID: " + id + " not found!", HttpStatus.NOT_FOUND);
+    }
 }

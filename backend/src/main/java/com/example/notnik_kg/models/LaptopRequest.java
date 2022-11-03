@@ -11,6 +11,7 @@ import javax.validation.constraints.NotEmpty;
 @NoArgsConstructor
 @AllArgsConstructor
 public class LaptopRequest {
+
     @NotEmpty(message = "Title can not be empty")
     private String title;
 
