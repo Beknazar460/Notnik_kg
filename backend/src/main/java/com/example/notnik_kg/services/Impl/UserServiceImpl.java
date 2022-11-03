@@ -112,4 +112,30 @@ public class UserServiceImpl {
         }
         return new ResponseEntity<>("User with ID: " + id + " not found!", HttpStatus.NOT_FOUND);
     }
+
+    @Transactional
+    public ResponseEntity<String> userLock(Long id) {
+        UserEntity user = userRepo.findById(id).orElse(null);
+        if(user != null) {
+            if(user.getLock() == 1){
+                return new ResponseEntity<>("The user is already blocked!", HttpStatus.BAD_REQUEST);
+            }
+            user.setLock(1);
+            return new ResponseEntity<>("User has been blocked!", HttpStatus.OK);
+        }
+        return new ResponseEntity<>("User with ID: " + id + " not found!", HttpStatus.NOT_FOUND);
+    }
+
+    @Transactional
+    public ResponseEntity<String> userUnlock(Long id) {
+        UserEntity user = userRepo.findById(id).orElse(null);
+        if(user != null) {
+            if(user.getLock() == 0){
+                return new ResponseEntity<>("The user is already unblocked!", HttpStatus.BAD_REQUEST);
+            }
+            user.setLock(0);
+            return new ResponseEntity<>("User has been unblocked!", HttpStatus.OK);
+        }
+        return new ResponseEntity<>("User with ID: " + id + " not found!", HttpStatus.NOT_FOUND);
+    }
 }

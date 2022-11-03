@@ -41,4 +41,23 @@ public class AdminController {
     public ResponseEntity<String> addUser(@PathVariable("id") Long id){
         return userService.makeUser(id);
     }
+
+    @PostMapping("/lock/{id}")
+    @Operation(
+            summary = "Заблокировать пользователя",
+            description = "Позволяет заблокировать выбранного пользователя"
+    )
+    public ResponseEntity<String> userLock(@PathVariable("id") Long id){
+        return userService.userLock(id);
+    }
+
+    @PostMapping("/unlock/{id}")
+    @Operation(
+            summary = "Разблокировать пользователя",
+            description = "Позволяет разблокировать выбранного пользователя"
+    )
+    public ResponseEntity<String> unUnlock(@PathVariable("id") Long id){
+        return userService.userUnlock(id);
+    }
+
 }

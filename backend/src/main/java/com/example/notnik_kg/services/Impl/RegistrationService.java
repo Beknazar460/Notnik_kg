@@ -33,6 +33,7 @@ public class RegistrationService {
         user.setPassword(person.getPassword());
         user.setPhoneNumber(person.getPhoneNumber());
         user.setRole("ROLE_USER");
+        user.setLock(0);
         user.setDateOfRegistration(LocalDateTime.now());
         userRepo.save(user);
         return ResponseEntity.ok(HttpStatus.OK);

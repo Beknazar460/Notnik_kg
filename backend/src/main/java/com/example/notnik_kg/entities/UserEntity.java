@@ -40,6 +40,9 @@ public class UserEntity {
     @Column(name = "role")
     private String role;
 
+    @Column(name = "lock")
+    private int lock;
+
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
     private List<OrderEntity> orderEntities;
 }

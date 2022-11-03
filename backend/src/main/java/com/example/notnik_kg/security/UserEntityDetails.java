@@ -37,6 +37,9 @@ public class UserEntityDetails implements org.springframework.security.core.user
 
     @Override
     public boolean isAccountNonLocked() {
+        if(this.userEntity.getLock() == 1){
+            return false;
+        }
         return true;
     }
 
