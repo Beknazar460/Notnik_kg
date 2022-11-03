@@ -2,6 +2,7 @@ package com.example.notnik_kg.services.Impl;
 
 import com.example.notnik_kg.entities.LaptopEntity;
 import com.example.notnik_kg.entities.OrderEntity;
+import com.example.notnik_kg.entities.UserEntity;
 import com.example.notnik_kg.models.OrderModel;
 import com.example.notnik_kg.models.OrderRequest;
 import com.example.notnik_kg.repositories.LaptopRepo;
@@ -11,10 +12,11 @@ import com.example.notnik_kg.services.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -43,14 +45,15 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public ResponseEntity<?> createOrder(OrderRequest orderRequest) {
         try {
-            if (userRepo.findById(orderRequest.getUserId()).isPresent() && lapTopRepo.findByTitle(orderRequest.getTitleOfProduct()) != null) {
+            UserEntity user = getUserAfterAuth();
+            if (userRepo.findById(user.getId()).isPresent() && lapTopRepo.findByTitle(orderRequest.getTitleOfProduct()) != null) {
                 OrderEntity orderEntity = new OrderEntity();
                 LaptopEntity laptopEntity = lapTopRepo.findByTitle(orderRequest.getTitleOfProduct());
                 if (laptopEntity != null) {
                     orderEntity.setTitleOfProduct(laptopEntity.getTitle());
                     orderEntity.setOrderDate(LocalDateTime.now());
                     orderEntity.setPriceOfProduct(laptopEntity.getPrice());
-                    orderEntity.setUser(userRepo.findById(orderRequest.getUserId()).get());
+                    orderEntity.setUser(userRepo.findById(user.getId()).get());
                     orderEntity.setLaptop(lapTopRepo.findByTitle(orderRequest.getTitleOfProduct()));
                     orderRepo.save(orderEntity);
                     return new ResponseEntity<String>("Order is created", HttpStatus.CREATED);
@@ -63,7 +66,7 @@ public class OrderServiceImpl implements OrderService {
                 return new ResponseEntity<String>("Such a user or product does not exist", HttpStatus.NOT_FOUND);
             }
         } catch (Exception e) {
-            return new ResponseEntity<String>("Error create new order", HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<String>("User isn't authorized", HttpStatus.BAD_REQUEST);
         }
     }
 
@@ -79,4 +82,10 @@ public class OrderServiceImpl implements OrderService {
             return new ResponseEntity<String>("Error delete order", HttpStatus.BAD_REQUEST);
         }
     }
+
+    public UserEntity getUserAfterAuth() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        return userRepo.findByEmail(authentication.getName());
+    }
+
 }
