@@ -38,11 +38,6 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public List<OrderEntity> getAll() {
-        return orderRepo.findAll();
-    }
-
-    @Override
     public ResponseEntity<?> createOrder(OrderRequest orderRequest) {
         try {
             UserEntity user = getUserAfterAuth();
